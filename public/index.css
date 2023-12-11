@@ -1,0 +1,65 @@
+html, body, main{
+    height: 100%;
+    width: 100%;    
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    z-index: 10;
+    border: none;
+}
+
+main{
+    background-color: aqua;
+}
+#game-container{
+    position: relative;
+    height: calc(100% - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floor{
+    width: 100vw;
+    height: 100px;
+    background: green;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-image: url("./img/campo.jpeg");
+
+}
+
+#cr7{
+    height: 80px;
+    width: 50px;
+    background-color: red;
+    position: absolute;
+    bottom: 0px;
+    left: 50px;
+}
+
+.btn{
+    z-index: 2;
+    padding: 10px;
+    border-radius: 10px;
+    background: transparent;
+    border: 2px solid white;
+    margin-bottom: 100px;
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+#start{
+    padding: 50px;
+    background: white;
+    color: #1B2735;
+    
+}
+#restart{
+    display: none;
+}
