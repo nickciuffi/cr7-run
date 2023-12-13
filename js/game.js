@@ -10,8 +10,9 @@ export class Game {
       new Floor(2000, 0, 2000, 100, 5, "floor2"),
     ];
     this.enemies = [];
+    this.isFirstPlay = true;
     this.gameLoop;
-    this.isPaused = false;
+    this.isPaused = true;
     this.dificultyCounter = 0;
     this.enemyCounter = 0;
     this.gameSpeed = 5;
@@ -22,9 +23,17 @@ export class Game {
   }
 
   start() {
+    if (!this.isFirstPlay) {
+      console.log("hello");
+      this.isPaused = false;
+      return;
+    }
+    this.isFirstPlay = false;
+    this.isPaused = false;
     this.addListeners();
     this.addIntervals();
     setInterval(() => {
+      if (this.isPaused) return;
       this.timeCounter++;
       console.log("Tempo:", this.timeCounter);
     }, 1000);
@@ -35,8 +44,33 @@ export class Game {
     }, 17);
   }
   stop() {
+    this.isPaused = true;
     this.showRestart();
-    clearInterval(this.gameLoop);
+  }
+  restart() {
+    this.player.y = 0;
+    this.floors[0].x = 0;
+    this.floors[1].x = 2000;
+    this.timeCounter = 0;
+    this.enemies = [];
+    document.querySelectorAll(".enemy").forEach((en) => {
+      document.querySelector("#game-container").removeChild(en);
+    });
+
+    /*  this.floors = [
+      new Floor(0, 0, 2000, 100, 5, "floor1"),
+      new Floor(2000, 0, 2000, 100, 5, "floor2"),
+    ];
+    this.enemies = [];
+    this.gameLoop;
+    this.isPaused = false;
+    this.dificultyCounter = 0;
+    this.enemyCounter = 0;
+    this.gameSpeed = 5;
+    this.nextEnemyTime = 140;
+    this.minEnemyTime = 120;
+    this.enemiesQtd = 0;
+    this.timeCounter = 0; */
   }
   makeGameHarder() {
     if (this.gameSpeed >= 15) return;
