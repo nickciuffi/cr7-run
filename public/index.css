@@ -22,14 +22,21 @@ main{
 }
 
 .floor{
-    width: 100vw;
+    width: 2000px;
     height: 100px;
     background: green;
     position: absolute;
     bottom: 0;
-    left: 0;
+    
     background-image: url("./img/campo.jpeg");
 
+}
+
+#floor1{
+    left: 0;
+}
+#floor2{
+    left:2000px;
 }
 
 #cr7{
@@ -62,4 +69,12 @@ main{
 }
 #restart{
     display: none;
+}
+
+.enemy{
+    height: 80px;
+    width: 50px;
+    
+    position: absolute;
+    background-color: green;
 }

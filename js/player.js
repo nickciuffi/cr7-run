@@ -1,7 +1,9 @@
 export class Player {
-  constructor(x, y, jumpForce) {
+  constructor(x, y, width, height, jumpForce) {
     this.x = x;
     this.y = y;
+    this.width = width;
+    this.height = height;
     this.ySpeed = 0;
     this.jumpForce = jumpForce;
     this.isJumping = false;
@@ -9,7 +11,7 @@ export class Player {
     this.element = document.getElementById("cr7");
   }
   startJump() {
-    if(!this.canJump) return
+    if (!this.canJump) return;
     this.ySpeed = this.jumpForce;
     this.isJumping = true;
     this.canJump = false;
@@ -19,13 +21,12 @@ export class Player {
     if (this.y > 0) {
       this.ySpeed -= 1;
     } else {
-      
       this.ySpeed = 0;
       this.y = 0;
-      this.isJumping = false
+      this.isJumping = false;
       setTimeout(() => {
         this.canJump = true;
-      }, 100)
+      }, 100);
     }
   }
   proccess() {
@@ -35,7 +36,7 @@ export class Player {
     this.element.style.bottom = this.px(this.y);
     this.element.style.left = this.px(this.x);
   }
-  px(num){
-    return `${num}px`
+  px(num) {
+    return `${num}px`;
   }
 }
