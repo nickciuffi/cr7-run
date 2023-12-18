@@ -14,9 +14,8 @@ export class Object {
     this.x = this.x - this.speed;
   }
   render() {
-    if (!(this instanceof Enemy)) {
-     
-    }
+    this.element.style.width = this.px(this.width);
+    this.element.style.height = this.px(this.height);
     this.element.style.left = this.px(this.x);
     this.element.style.bottom = this.px(this.y);
   }

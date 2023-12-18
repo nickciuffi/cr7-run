@@ -13,6 +13,7 @@ export class Game {
     this.isFirstPlay = true;
     this.gameLoop;
     this.isPaused = true;
+    this.isStoped = false;
     this.dificultyCounter = 0;
     this.enemyCounter = 0;
     this.gameSpeed = 5;
@@ -23,36 +24,45 @@ export class Game {
   }
 
   start() {
-    if (!this.isFirstPlay) {
-      console.log("hello");
-      this.isPaused = false;
-      return;
-    }
+    if (!this.isFirstPlay) return;
     this.isFirstPlay = false;
     this.isPaused = false;
+    this.isStoped = false;
     this.addListeners();
     this.addIntervals();
     setInterval(() => {
-      if (this.isPaused) return;
+      if (this.isPaused || this.isStoped) return;
       this.timeCounter++;
-      console.log("Tempo:", this.timeCounter);
+      this.changeTime(this.timeCounter);
     }, 1000);
     this.gameLoop = setInterval(() => {
-      if (this.isPaused) return;
+      if (this.isPaused || this.isStoped) return;
       this.proccess();
       this.render();
     }, 17);
   }
-  stop() {
+  changeTime(time) {
+    document.querySelector(".time-shower").innerHTML = time;
+  }
+  pause() {
     this.isPaused = true;
     this.showRestart();
   }
+  stop() {
+    this.isStoped = true;
+    this.showRestart();
+  }
   restart() {
+    this.changeTime("0");
     this.player.y = 0;
     this.floors[0].x = 0;
     this.floors[1].x = 2000;
     this.timeCounter = 0;
     this.enemies = [];
+    this.gameSpeed = 5;
+    this.minEnemyTime = 120;
+    this.setSpeeds();
+    this.isStoped = true;
     document.querySelectorAll(".enemy").forEach((en) => {
       document.querySelector("#game-container").removeChild(en);
     });
@@ -72,19 +82,25 @@ export class Game {
     this.enemiesQtd = 0;
     this.timeCounter = 0; */
   }
+  setSpeeds() {
+    this.floors.forEach((floor) => {
+      floor.speed = this.gameSpeed;
+    });
+    this.enemies.forEach((en) => {
+      en.speed = this.gameSpeed;
+    });
+  }
   makeGameHarder() {
-    if (this.gameSpeed >= 15) return;
+    if (this.gameSpeed >= 20 || this.isPaused || this.isStoped) return;
     this.dificultyCounter++;
     if (this.dificultyCounter >= 300) {
       this.dificultyCounter = 0;
       this.gameSpeed++;
-      this.floors.forEach((floor) => {
-        floor.speed = this.gameSpeed;
-      });
-      this.enemies.forEach((en) => {
-        en.speed = this.gameSpeed;
-      });
+      this.setSpeeds();
     }
+  }
+  generateRand(min, variation) {
+    return Math.floor(min + Math.random() * variation);
   }
   createNewEnemy() {
     this.enemyCounter++;
@@ -93,12 +109,22 @@ export class Game {
     this.enemiesQtd++;
     //how fast will the enemies come
     this.minEnemyTime -= 2;
-    this.nextEnemyTime = Math.floor(this.minEnemyTime + Math.random() * 40);
+    this.nextEnemyTime = this.generateRand(this.minEnemyTime, 60);
     const enEl = document.createElement("div");
     enEl.id = `enemy-${this.enemiesQtd}`;
     enEl.className = "enemy";
     document.querySelector("#game-container").appendChild(enEl);
-    const en = new Enemy(2000, 0, 50, 80, this.gameSpeed, enEl.id);
+    const en = new Enemy(
+      2000,
+      0,
+      50,
+      40,
+      this.gameSpeed,
+      enEl.id,
+      true,
+      this.generateRand(1100, 3000),
+      this.generateRand(20, 10)
+    );
     this.enemies.push(en);
   }
   controlFloor() {
@@ -154,6 +180,10 @@ export class Game {
     setInterval(this.makeGameHarder, 200);
   }
   addListeners() {
+    document.addEventListener("click", ()=>{
+      if(this.isPaused || this.isStoped) return;
+      this.player.startJump()
+    })
     document.addEventListener("keydown", (data) => {
       if (data.key === " ") {
         if (this.isPaused) {
@@ -164,6 +194,7 @@ export class Game {
         this.player.startJump();
       }
       if (data.key === "Escape") {
+        if (this.isStoped) return;
         this.showRestart();
         this.isPaused = true;
       }
