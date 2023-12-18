@@ -32,7 +32,7 @@ export class Enemy extends Object {
   }
 
   startJump() {
-    if (!this.canJump && !this.isAllowedToJump) return;
+    if (!this.canJump || !this.isAllowedToJump) return;
     this.ySpeed = this.jumpForce;
     this.isJumping = true;
     this.canJump = false;

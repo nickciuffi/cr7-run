@@ -40,12 +40,15 @@ main{
 }
 
 #cr7{
-    height: 80px;
-    width: 50px;
-    background-color: red;
+    height: 120px;
+    width: 70px;
+    background-color: transparent;
     position: absolute;
-    bottom: 0px;
+    bottom: -10px;
     left: 50px;
+    background-image: url(./img/cr7-1.png);
+    background-position: center;
+    background-size: cover;
 }
 
 .btn{

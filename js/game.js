@@ -4,7 +4,7 @@ import { Player } from "./player.js";
 
 export class Game {
   constructor() {
-    this.player = new Player(50, 0, 50, 80, 18);
+    this.player = new Player(50, 0, 50, 80, 20);
     this.floors = [
       new Floor(0, 0, 2000, 100, 5, "floor1"),
       new Floor(2000, 0, 2000, 100, 5, "floor2"),
@@ -114,15 +114,16 @@ export class Game {
     enEl.id = `enemy-${this.enemiesQtd}`;
     enEl.className = "enemy";
     document.querySelector("#game-container").appendChild(enEl);
+    console.log(this.timeCounter);
     const en = new Enemy(
       2000,
       0,
-      50,
-      40,
+      60,
+      60,
       this.gameSpeed,
       enEl.id,
-      true,
-      this.generateRand(1100, 3000),
+      this.timeCounter > 30,
+      this.generateRand(1100, 2000),
       this.generateRand(20, 10)
     );
     this.enemies.push(en);
@@ -180,10 +181,10 @@ export class Game {
     setInterval(this.makeGameHarder, 200);
   }
   addListeners() {
-    document.addEventListener("click", ()=>{
-      if(this.isPaused || this.isStoped) return;
-      this.player.startJump()
-    })
+    document.addEventListener("click", () => {
+      if (this.isPaused || this.isStoped) return;
+      this.player.startJump();
+    });
     document.addEventListener("keydown", (data) => {
       if (data.key === " ") {
         if (this.isPaused) {
