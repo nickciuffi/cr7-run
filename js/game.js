@@ -31,12 +31,16 @@ export class Game {
     this.minEnemyTime = 120;
     this.enemiesQtd = 0;
     this.timeCounter = 0;
-    document.querySelector(".high-score").innerHTML =
-      "HighScore: " + localStorage.getItem("time") || 0;
+    this.setHighScore(0);
   }
 
   setHighScore(time) {
     const storedTime = localStorage.getItem("time");
+    if (time === 0)
+      if (storedTime) {
+        return (document.querySelector(".high-score").innerHTML =
+          "HighScore: " + storedTime);
+      }
     if (!storedTime || time > storedTime) {
       alert(" New Highscore!");
       localStorage.setItem("time", time);

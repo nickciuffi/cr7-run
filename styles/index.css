@@ -101,3 +101,12 @@ main{
     position: absolute;
     background-color: green;
 }
+
+@media screen and (max-width: 780px){
+    .high-score{
+        left: unset;
+    }
+    .time-shower{
+        top: 100px;
+    }
+}
