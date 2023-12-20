@@ -14,10 +14,13 @@ export class Object {
     this.x = this.x - this.speed;
   }
   render() {
-    this.element.style.width = this.px(this.width);
+    
     this.element.style.height = this.px(this.height);
     this.element.style.left = this.px(this.x);
     this.element.style.bottom = this.px(this.y);
+  }
+  porcent(num) {
+    return `${num}%`;
   }
   px(num) {
     return `${num}px`;

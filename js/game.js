@@ -4,10 +4,20 @@ import { Player } from "./player.js";
 
 export class Game {
   constructor() {
-    this.player = new Player(50, 0, 50, 80, 20);
+    this.player = new Player(50, 100, 50, 80, 20);
+    this.width = getComputedStyle(
+      document.querySelector("#game-container")
+    ).width;
     this.floors = [
-      new Floor(0, 0, 2000, 100, 5, "floor1"),
-      new Floor(2000, 0, 2000, 100, 5, "floor2"),
+      new Floor(0, 0, this.width.replace("px", ""), 100, 5, "floor1"),
+      new Floor(
+        this.width.replace("px", ""),
+        0,
+        this.width.replace("px", ""),
+        100,
+        5,
+        "floor2"
+      ),
     ];
     this.enemies = [];
     this.isFirstPlay = true;
@@ -21,10 +31,23 @@ export class Game {
     this.minEnemyTime = 120;
     this.enemiesQtd = 0;
     this.timeCounter = 0;
+    document.querySelector(".high-score").innerHTML =
+      "HighScore: " + localStorage.getItem("time") || 0;
+  }
+
+  setHighScore(time) {
+    const storedTime = localStorage.getItem("time");
+    if (!storedTime || time > storedTime) {
+      alert(" New Highscore!");
+      localStorage.setItem("time", time);
+      document.querySelector(".high-score").innerHTML =
+        "HighScore: " + time || 0;
+    }
   }
 
   start() {
     if (!this.isFirstPlay) return;
+
     this.isFirstPlay = false;
     this.isPaused = false;
     this.isStoped = false;
@@ -49,14 +72,15 @@ export class Game {
     this.showRestart();
   }
   stop() {
+    this.setHighScore(this.timeCounter);
     this.isStoped = true;
     this.showRestart();
   }
   restart() {
     this.changeTime("0");
-    this.player.y = 0;
+    this.player.y = 100;
     this.floors[0].x = 0;
-    this.floors[1].x = 2000;
+    this.floors[1].x = 800;
     this.timeCounter = 0;
     this.enemies = [];
     this.gameSpeed = 5;
@@ -66,21 +90,6 @@ export class Game {
     document.querySelectorAll(".enemy").forEach((en) => {
       document.querySelector("#game-container").removeChild(en);
     });
-
-    /*  this.floors = [
-      new Floor(0, 0, 2000, 100, 5, "floor1"),
-      new Floor(2000, 0, 2000, 100, 5, "floor2"),
-    ];
-    this.enemies = [];
-    this.gameLoop;
-    this.isPaused = false;
-    this.dificultyCounter = 0;
-    this.enemyCounter = 0;
-    this.gameSpeed = 5;
-    this.nextEnemyTime = 140;
-    this.minEnemyTime = 120;
-    this.enemiesQtd = 0;
-    this.timeCounter = 0; */
   }
   setSpeeds() {
     this.floors.forEach((floor) => {
@@ -114,10 +123,9 @@ export class Game {
     enEl.id = `enemy-${this.enemiesQtd}`;
     enEl.className = "enemy";
     document.querySelector("#game-container").appendChild(enEl);
-    console.log(this.timeCounter);
     const en = new Enemy(
       2000,
-      0,
+      100,
       60,
       60,
       this.gameSpeed,
@@ -129,12 +137,12 @@ export class Game {
     this.enemies.push(en);
   }
   controlFloor() {
-    if (this.floors[0].x <= this.floors[0].width * -1) {
-      this.floors[0].x = this.floors[0].width;
+    if (this.floors[0].x <= -1 * this.width.replace("px", "")) {
+      this.floors[0].x = this.width.replace("px", "");
       this.floors[1].x = 0;
     }
-    if (this.floors[1].x <= this.floors[1].width * -1) {
-      this.floors[1].x = this.floors[1].width;
+    if (this.floors[1].x <= -1 * this.width.replace("px", "")) {
+      this.floors[1].x = this.width.replace("px", "");
       this.floors[0].x = 0;
     }
   }

@@ -21,8 +21,7 @@ export class Enemy extends Object {
     this.jumpInterval = jumpInterval;
     this.isAllowedToJump = isAllowedToJump;
     this.createIntervals();
-    console.log("height: " + this.height);
-    console.log("jump force: " + this.jumpForce);
+   
   }
 
   createIntervals() {
@@ -39,11 +38,11 @@ export class Enemy extends Object {
   }
   executeJump() {
     this.y = this.y + this.ySpeed;
-    if (this.y > 0) {
+    if (this.y > 100) {
       this.ySpeed -= 1;
     } else {
       this.ySpeed = 0;
-      this.y = 0;
+      this.y = 100;
       this.isJumping = false;
       setTimeout(() => {
         this.canJump = true;

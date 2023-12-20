@@ -64,7 +64,7 @@ body
   position: absolute;
   height: 100%;
   z-index: 1;
-  width: 200%;
+  width: 100%;
   background: radial-gradient(ellipse at bottom, #1B2735 0%, #191F24 100%);
   overflow: hidden;
   @include translate50;

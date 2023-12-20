@@ -24,11 +24,11 @@ export class Player {
   }
   executeJump() {
     this.y = this.y + this.ySpeed;
-    if (this.y > -5) {
+    if (this.y > 100) {
       this.ySpeed -= 1;
     } else {
       this.ySpeed = 0;
-      this.y = -5;
+      this.y = 100;
       this.isJumping = false;
       setTimeout(() => {
         this.canJump = true;
@@ -53,6 +53,9 @@ export class Player {
   render() {
     this.element.style.bottom = this.px(this.y);
     this.element.style.left = this.px(this.x);
+  }
+  porcent(num) {
+    return `${num}%`;
   }
   px(num) {
     return `${num}px`;
