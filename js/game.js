@@ -4,7 +4,7 @@ import { Player } from "./player.js";
 
 export class Game {
   constructor() {
-    this.player = new Player(50, 100, 50, 80, 20);
+    this.player = new Player(50, 100, 70, 100, 20);
     this.width = getComputedStyle(
       document.querySelector("#game-container")
     ).width;
@@ -31,16 +31,17 @@ export class Game {
     this.minEnemyTime = 120;
     this.enemiesQtd = 0;
     this.timeCounter = 0;
+    this.listenGetDown = null
     this.setHighScore(0);
+
   }
 
   setHighScore(time) {
     const storedTime = localStorage.getItem("time");
     if (time === 0)
-      if (storedTime) {
-        return (document.querySelector(".high-score").innerHTML =
-          "HighScore: " + storedTime);
-      }
+      return (document.querySelector(".high-score").innerHTML =
+        "HighScore: " + storedTime);
+
     if (!storedTime || time > storedTime) {
       alert(" New Highscore!");
       localStorage.setItem("time", time);
@@ -82,6 +83,8 @@ export class Game {
   }
   restart() {
     this.changeTime("0");
+    this.isPaused = false;
+    this.isStoped = false;
     this.player.y = 100;
     this.floors[0].x = 0;
     this.floors[1].x = 800;
@@ -90,7 +93,6 @@ export class Game {
     this.gameSpeed = 5;
     this.minEnemyTime = 120;
     this.setSpeeds();
-    this.isStoped = true;
     document.querySelectorAll(".enemy").forEach((en) => {
       document.querySelector("#game-container").removeChild(en);
     });
@@ -198,7 +200,18 @@ export class Game {
       this.player.startJump();
     });
     document.addEventListener("keydown", (data) => {
-      if (data.key === " ") {
+     
+      if (data.key === "ArrowDown" || data.key === "s") {
+        this.player.getDown();
+       
+      }
+      if (data.key === " " || data.key === "ArrowUp" || data.key === "w" || data.key === "Enter") {
+       if (this.isStoped) {
+
+          this.restart();
+          this.hideRestart();
+          return
+        }
         if (this.isPaused) {
           this.isPaused = false;
           this.hideRestart();
@@ -212,6 +225,11 @@ export class Game {
         this.isPaused = true;
       }
     });
+    document.addEventListener("keyup", (upData) => {
+      if (upData.key === "ArrowDown" || upData.key === "s") {
+        this.player.getUp();
+      }
+    })
   }
   showRestart() {
     document.getElementById("restart").style.display = "block";

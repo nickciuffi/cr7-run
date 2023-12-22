@@ -7,6 +7,7 @@ export class Player {
     this.ySpeed = 0;
     this.jumpForce = jumpForce;
     this.isJumping = false;
+    this.isDown = false;
     this.canJump = true;
     this.element = document.getElementById("cr7");
     this.bgImgs = [
@@ -15,6 +16,17 @@ export class Player {
     ];
     this.bgImgNum = 0;
     this.animationCount = 0;
+  }
+  getDown(){
+    if(this.isDown) return
+    if(this.ySpeed > 0) this.ySpeed * -1;
+    this.height = this.height / 2;
+    this.isDown = true;
+  }
+  getUp(){
+    if(!this.isDown) return;
+    this.height = this.height * 2;
+    this.isDown = false;
   }
   startJump() {
     if (!this.canJump) return;
@@ -25,7 +37,7 @@ export class Player {
   executeJump() {
     this.y = this.y + this.ySpeed;
     if (this.y > 100) {
-      this.ySpeed -= 1;
+      this.ySpeed -= this.isDown ? 2 : 1;
     } else {
       this.ySpeed = 0;
       this.y = 100;
@@ -53,6 +65,7 @@ export class Player {
   render() {
     this.element.style.bottom = this.px(this.y);
     this.element.style.left = this.px(this.x);
+    this.element.style.height = this.px(this.height)
   }
   porcent(num) {
     return `${num}%`;

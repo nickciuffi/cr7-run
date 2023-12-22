@@ -11,6 +11,5 @@ btnStart.addEventListener("click", () => {
 });
 btnRestart.addEventListener("click", () => {
   game.restart();
-  btnRestart.style.display = "none";
-  btnStart.style.display = "block";
+  game.hideRestart()
 });
